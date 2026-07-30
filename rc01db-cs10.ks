@@ -14,8 +14,9 @@ keyboard --vckeymap=us --xlayouts='us'
 lang en_US.UTF-8
 
 # Network information
-network  --bootproto=static --device=ens192 --gateway=10.32.1.1 --ip=10.32.1.60 --nameserver=8.8.8.8 --netmask=255.255.255.0 --noipv6 --activate --ipv4-dns-search=pte.cne.ti.local
-network  --hostname=demorc.pte.cne.ti.local
+network  --bootproto=static --device=ens192 --ip=10.32.1.141 --netmask=255.255.255.0 --noipv6 --activate --gateway=10.32.1.1 --nameserver=8.8.8.8 --ipv4-dns-search=pte.cne.ti.local
+network  --bootproto=static --device=ens224 --ip=10.100.4.51 --netmask=255.255.255.0 --noipv6 --activate
+network  --hostname=rc01db.pte.cne.ti.local
 
 # Use network installation
 url --url="https://mirror.stream.centos.org/10-stream/BaseOS/x86_64/os/"
