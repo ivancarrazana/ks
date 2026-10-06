@@ -111,7 +111,7 @@ logvol /var --fstype="xfs" --percent=10 --name=var --vgname=centos
 logvol /var/log --fstype="xfs" --percent=10 --name=var_log --vgname=centos
 logvol /var/log/audit --fstype="xfs" --percent=10 --name=var_log_audit --vgname=centos
 logvol /var/lib --fstype="xfs" --percent=30 --name=var_lib --vgname=centos
-logvol /opt --fstype="xfs" --percent=10 --name=opt --vgname=centos
+logvol /opt --fstype="xfs" --percent=15 --name=opt --vgname=centos
 
 # System timezone
 timesource --ntp-server=time1.google.com
