@@ -14,8 +14,8 @@ keyboard --vckeymap=us --xlayouts='us'
 lang en_US.UTF-8
 
 # Network information
-network  --bootproto=static --device=ens192 --gateway=10.31.1.1 --ip=10.31.1.245 --nameserver=10.31.1.1 --netmask=255.255.255.0 --noipv6 --activate --ipv4-dns-search=ve.ex-cle.local
-network  --hostname=template-cs10.ve.ex-cle.local
+network  --bootproto=static --device=ens192 --gateway=10.62.3.1 --ip=10.62.3.100 --nameserver=1.1.1.1 --netmask=255.255.255.0 --noipv6 --activate --ipv4-dns-search=ve.suve.local
+network  --hostname=template-cs10.ve.suve.local
 
 # Use network installation
 url --url="https://mirror.stream.centos.org/10-stream/BaseOS/x86_64/os/"
