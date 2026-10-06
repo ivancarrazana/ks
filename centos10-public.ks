@@ -47,6 +47,9 @@ docker-compose-plugin
 git
 open-vm-tools
 dnf-plugins-core
+cloud-init
+cloud-utils-growpart
+qemu-guest-agent
 -avahi
 -bind
 -cups
