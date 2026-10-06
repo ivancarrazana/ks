@@ -18,11 +18,11 @@ network  --bootproto=static --device=ens192 --gateway=10.31.1.1 --ip=10.31.1.245
 network  --hostname=template-cs10.ve.ex-cle.local
 
 # Use network installation
-url --url="http://10.31.1.29/CentOS/10-stream/BaseOS"
-repo --install --name="CentOS-BaseOS" --baseurl=http://10.31.1.29/CentOS/10-stream/BaseOS
-repo --install --name="CentOS-AppStream" --baseurl=http://10.31.1.29/CentOS/10-stream/AppStream
-repo --install --name="EPEL" --baseurl=http://10.31.1.29/EPEL/el10/Everything
-repo --install --name="Docker" --baseurl=http://10.31.1.29/Docker/rhel/10
+url --url="https://mirror.stream.centos.org/10-stream/BaseOS/x86_64/os/"
+repo --name="CentOS-BaseOS"    --baseurl=https://mirror.stream.centos.org/10-stream/BaseOS/x86_64/os/
+repo --name="CentOS-AppStream" --baseurl=https://mirror.stream.centos.org/10-stream/AppStream/x86_64/os/
+repo --name="EPEL"             --baseurl=https://dl.fedoraproject.org/pub/epel/10/Everything/x86_64/
+repo --name="Docker"           --baseurl=https://download.docker.com/linux/rhel/10/x86_64/stable/
 
 %packages
 @^minimal-environment
@@ -46,6 +46,7 @@ docker-buildx-plugin
 docker-compose-plugin
 git
 open-vm-tools
+dnf-plugins-core
 -avahi
 -bind
 -cups
@@ -150,31 +151,6 @@ do
     mount -o remount $MOUNT_POINT || true
 done
 
-### Configure Custom Repositories
-export RH_VERSION="10"
-export REPO_SERVER="10.31.1.29"
-cat << EOF >> /etc/yum.repos.d/CentOS-BaseOS.repo
-gpgcheck = 1
-gpgkey = http://${REPO_SERVER}/CentOS/${RH_VERSION}-stream/BaseOS/gpg/RPM-GPG-KEY-CentOS-Official-SHA256
-
-EOF
-cat << EOF >> /etc/yum.repos.d/CentOS-AppStream.repo
-gpgcheck = 1
-gpgkey = http://${REPO_SERVER}/CentOS/${RH_VERSION}-stream/AppStream/gpg/RPM-GPG-KEY-CentOS-Official-SHA256
-
-EOF
-cat << EOF >> /etc/yum.repos.d/EPEL.repo
-gpgcheck = 1
-gpgkey = http://${REPO_SERVER}/EPEL/el${RH_VERSION}/Everything/gpg/RPM-GPG-KEY-EPEL-${RH_VERSION}
-
-EOF
-cat << EOF >> /etc/yum.repos.d/Docker.repo
-gpgcheck = 1
-gpgkey = http://${REPO_SERVER}/Docker/rhel/${RH_VERSION}/gpg/gpg
-
-EOF
-rm -f /etc/yum.repos.d/centos.repo /etc/yum.repos.d/centos-addons.repo
-
 ### GRUB Password Configuration
 cat << 'EOF' > /etc/grub.d/01_users
 #!/bin/sh
@@ -187,7 +163,7 @@ chmod +x /etc/grub.d/01_users
 grub2-mkconfig -o /boot/grub2/grub.cfg
 
 ### Docker group and basic configuration
-for USER in excle ansiblexcle; do usermod -aG docker $USER || true; done
+for USER in excle; do usermod -aG docker $USER || true; done
 cat << EOF > /etc/docker/daemon.json
 {
     "log-driver": "journald",
@@ -205,7 +181,7 @@ EOF
 ### SSH Configuration
 cat << EOF > /etc/ssh/sshd_config.d/00-basic.conf
 PasswordAuthentication yes
-AllowUsers excle
+
 EOF
 chmod 0644 /etc/ssh/sshd_config.d/*
 
@@ -215,6 +191,8 @@ excle ALL=(ALL:ALL) NOPASSWD:ALL
 
 EOF
 chmod 0440 /etc/sudoers.d/00_admin_users
+dnf config-manager --add-repo https://download.docker.com/linux/rhel/docker-ce.repo
+dnf install -y epel-release
 
 %end
 
