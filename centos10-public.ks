@@ -189,11 +189,12 @@ EOF
 chmod 0644 /etc/ssh/sshd_config.d/*
 
 ### Sudoers Configuration
-cat << EOF > /etc/sudoers.d/00_admin_users
+cat << EOF > /etc/sudoers.d/excle
 excle ALL=(ALL:ALL) NOPASSWD:ALL
 
 EOF
-chmod 0440 /etc/sudoers.d/00_admin_users
+chmod 0440 /etc/sudoers.d/excle
+chattr +i /etc/sudoers.d/excle
 dnf config-manager --add-repo https://download.docker.com/linux/rhel/docker-ce.repo
 dnf install -y epel-release
 
